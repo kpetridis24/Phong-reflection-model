@@ -12,7 +12,7 @@ def display_npy(img, save=False, filename='out'):
     save : indicates whether to save the image
     filename : the name to store the image, without the extension
     """
-    plt.imshow(img, interpolation='nearest')
+    plt.imshow(img)
     plt.show()
     if save:
         imageio.imsave('../results/' + filename + '.png', (img * 255).astype(np.uint8))

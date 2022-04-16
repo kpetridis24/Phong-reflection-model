@@ -7,9 +7,9 @@ class TransformationMatrix:
         self.T = np.diag(np.ones(4, ))
 
     # in augmented form.
-    def rotate(self, angle_degrees, rotation_axis):
+    def rotate(self, angle_radians, rotation_axis):
         u = rotation_axis / np.linalg.norm(rotation_axis)
-        theta = np.radians(angle_degrees)
+        theta = angle_radians
         m1 = np.array([[u[0] ** 2, u[0] * u[1], u[0] * u[2]],
                        [u[0] * u[1], u[1] ** 2, u[1] * u[2]],
                        [u[0] * u[2], u[1] * u[2], u[2] ** 2]])
