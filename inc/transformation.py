@@ -2,12 +2,23 @@ import numpy as np
 
 
 class TransformationMatrix:
-    # in augmented form
+    """Class implementing the rotation and translation transformations.
+
+    Notes
+    -----
+    The matrix T is always stored in its augmented form.
+    """
     def __init__(self):
         self.T = np.diag(np.ones(4, ))
 
-    # in augmented form.
     def rotate(self, angle_radians, rotation_axis):
+        """Computes the augmented, rotation (Rodrigues) matrix.
+
+        Parameters
+        ----------
+        angle_radians: the angle of rotation, given in radians.
+        rotation_axis: the axis of rotation.
+        """
         u = rotation_axis / np.linalg.norm(rotation_axis)
         theta = angle_radians
         m1 = np.array([[u[0] ** 2, u[0] * u[1], u[0] * u[2]],
@@ -21,6 +32,9 @@ class TransformationMatrix:
                                                                           + np.around(np.sin(theta), decimals=2) * m3
         self.T[0:len(self.T) - 1, 0:len(self.T) - 1] = rotation_matrix
 
-    # in augmented form
     def translate(self, t):
+        """Computes the augmented translation matrix.
+
+        t: the displacement vector.
+        """
         self.T[0:len(self.T) - 1, len(self.T) - 1] = t
