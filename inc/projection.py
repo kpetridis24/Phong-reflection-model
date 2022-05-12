@@ -3,7 +3,7 @@ from inc.coordinate_system import system_transform
 from inc.transformation import TransformationMatrix
 
 
-def project_camera(w, cv, cx, cy, cz, p):
+def project_camera(f, cv, cx, cy, cz, p):
     """Computes the projection of 3D points into the camera's curtain.
 
     Notes
@@ -19,7 +19,7 @@ def project_camera(w, cv, cx, cy, cz, p):
 
     Parameters
     ----------
-    w : the distance between the lens and curtain of the camera.
+    f : the distance between the lens and curtain of the camera.
     cv : the position vector of the camera.
     cx : x axis of the camera.
     cy : y axis of the camera, which is vertical.
@@ -42,15 +42,16 @@ def project_camera(w, cv, cx, cy, cz, p):
     P, D = np.zeros((p.shape[0], 2)), np.zeros((p.shape[0],))
     for i in range(p.shape[0]):
         cp_ = system_transform(np.array([p[i, :]]), M.T)
+        # print(cp_)
         cp_ = np.concatenate((cp_, np.array([np.ones((1,))])), axis=1)
-        P[i, 0] = - (w * cp_[0, 0] / cp_[0, 2])
-        P[i, 1] = - (w * cp_[0, 1] / cp_[0, 2])
+        P[i, 0] = - (f * cp_[0, 0] / cp_[0, 2])
+        P[i, 1] = - (f * cp_[0, 1] / cp_[0, 2])
         D[i] = cp_[0, 2]
 
     return P, D
 
 
-def project_camera_ku(w, cv, c_lookat, c_up, p):
+def project_camera_lookat(f, cv, c_lookat, c_up, p):
     """Computes the projection of 3D points into the camera's curtain.
 
     Notes
@@ -61,11 +62,11 @@ def project_camera_ku(w, cv, c_lookat, c_up, p):
 
     Parameters
     ----------
-    w: the distance between the lens and curtain of the camera.
-    cv: the position vector of the camera.
-    c_lookat: the target at which the camera points to.
-    c_up: the up-vector of the camera.
-    p: Nx3 matrix containing the 3D coordinates of all points
+    f : the distance between the lens and curtain of the camera.
+    cv : the position vector of the camera.
+    c_lookat : the target at which the camera points to.
+    c_up : the up-vector of the camera.
+    p : Nx3 matrix containing the 3D coordinates of all points
 
     Returns
     -------
@@ -75,6 +76,6 @@ def project_camera_ku(w, cv, c_lookat, c_up, p):
     t = c_up - np.dot(c_up, zc) * zc
     yc = np.around(t / np.linalg.norm(t), 4)
     xc = np.around(np.cross(yc, zc), 4)
-    return project_camera(w, cv, xc, yc, zc, p)
+    return project_camera(f, cv, xc, yc, zc, p)
 
 

@@ -20,20 +20,15 @@ def load_data_npy(filename):
     depth : the depth of every vertex
     """
     data = np.load(filename, allow_pickle=True).tolist()
-    print(data)
     data = dict(data)
 
-    verts2d = np.array(data['verts2d'])
-    vcolors = np.array(data['vcolors'])
-    faces = np.array(data['faces'])
-    depth = np.array(data['depth'])
+    vcolors, faces, verts3d = np.array(data['vcolors']), np.array(data['faces']), np.array(data['verts3d'])
+    u = data['u']
+    ck, cu, cv = data['c_lookat'], data['c_up'], data['c_org']
+    t1, t2 = data['t_1'], data['t_2']
+    phi = data['phi']
 
-    # Turn the image by 90 degrees
-    verts2d_final = np.zeros((verts2d.shape[0], 2))
-    verts2d_final[:, 0] = verts2d[:, 1]
-    verts2d_final[:, 1] = verts2d[:, 0]
-
-    return verts2d_final, vcolors, faces, depth
+    return vcolors, faces, verts3d, u, ck, cu, cv, t1, t2, phi
 
 
 def load_data_mat(filename):
@@ -57,6 +52,6 @@ def load_data_mat(filename):
     w, g = data['w'][0, 0], data['g'].T[0]
     ck, cu, cv = data['ck'].T[0], data['cu'].T[0], data['cv'].T[0]
     t1, t2 = data['t1'].T[0], data['t2'].T[0]
-    theta = data['theta'][0]
+    phi = data['theta'][0]
 
-    return C, F, V, O, H, W, M, N, w, g, ck, cu, cv, t1, t2, theta
+    return C, F, V, g, ck, cu, cv, t1, t2, phi

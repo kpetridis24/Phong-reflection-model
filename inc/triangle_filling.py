@@ -56,7 +56,8 @@ def render_smooth(verts2d, vcolors, img):
         for x in range(x_min, x_max + 1):
             cross_counter += np.count_nonzero(x == np.around(active_nodes[active_edges, 0]))
             if cross_counter % 2 != 0:
-                img[x, y] = clr.interpolate_color(int(np.around(x_left)), int(np.around(x_right)), x, c1, c2)
+                if x < img.shape[0] and x >= 0 and y < img.shape[1] and y >= 0:
+                    img[x, y] = clr.interpolate_color(int(np.around(x_left)), int(np.around(x_right)), x, c1, c2)
 
     return img
 
@@ -101,10 +102,11 @@ def render_flat(verts2d, vcolors, img):
         cross_counter = 0
         for x in range(x_min, x_max + 1):
             cross_counter += np.count_nonzero(x == np.around(active_nodes[active_edges][:, 0]))
-            if cross_counter % 2 != 0:
-                img[x, y] = new_color
-            elif y == y_max and np.count_nonzero(x == np.around(active_nodes[active_edges][:, 0])) > 0:
-                img[x, y] = new_color
+            if x < img.shape[0] and x >= 0 and y < img.shape[1] and y >= 0:
+                if cross_counter % 2 != 0:
+                    img[x, y] = new_color
+                elif y == y_max and np.count_nonzero(x == np.around(active_nodes[active_edges][:, 0])) > 0:
+                    img[x, y] = new_color
 
         active_edges, active_nodes, updated_nodes = tls.update_active_edges(y, vertices_of_edge, y_limits_of_edge,
                                                                             sigma_of_edge, active_edges, active_nodes)

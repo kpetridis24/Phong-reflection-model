@@ -1,5 +1,5 @@
 import numpy as np
-from inc.projection import project_camera_ku
+from inc.projection import project_camera_lookat
 from inc.rasterize import rasterize
 from inc.triangle_filling import render_flat, render_smooth
 
@@ -41,29 +41,30 @@ def render(verts2d, faces, vcolors, depth, m, n, shade_t):
     return img
 
 
-def render_object(p, F, C, M, N, H, W, w, cv, c_lookat, c_up):
+def render_object(p, faces, vcolors, M, N, img_H, img_W, f, cv, c_lookat, c_up):
     """Projects a 3D object into 2D space and displays it on image.
 
     Parameters
     ----------
-    p: Nx3 matrix containing the 3D coordinates of all points
-    F: Kx3 matrix containing the vertex indices of every triangle (K triangles).
-    C: Nx3 matrix containing the RGB colors of every point.
-    M: length of the image frame.
-    N: width of the image frame.
-    H: length of the camera's curtain.
-    W: width of the camera's curtain
-    w: the distance between the lens and curtain of the camera.
-    cv: the position vector of the camera.
-    c_lookat: the target at which the camera points to.
-    c_up: the up-vector of the camera.
+    p : Nx3 matrix containing the 3D coordinates of all points
+    faces : Kx3 matrix containing the vertex indices of every triangle (K triangles).
+    vcolors : Nx3 matrix containing the RGB colors of every point.
+    M : length of the image frame.
+    N : width of the image frame.
+    img_H : length of the camera's curtain.
+    img_W : width of the camera's curtain
+    f : the distance between the lens and curtain of the camera.
+    cv : the position vector of the camera.
+    c_lookat : the target at which the camera points to.
+    c_up : the up-vector of the camera.
 
     Returns
     -------
     img : MxNx3 image matrix
     """
-    P, D = project_camera_ku(w, cv, c_lookat, c_up, p)
-    P_rast = rasterize(P, M, N, H, W)
-    img = render(verts2d=P_rast, faces=F, vcolors=C, depth=D, m=M, n=N, shade_t='gouraud')
+    P, D = project_camera_lookat(f, cv, c_lookat, c_up, p)
+    P_rast = rasterize(P, M, N, img_H, img_W)
+
+    img = render(verts2d=P_rast, faces=faces, vcolors=vcolors, depth=D, m=M, n=N, shade_t='gouraud')
 
     return img
