@@ -163,3 +163,16 @@ def color_contour(y, node_combination_on_edge, x_limits_of_edge, y_limits_of_edg
                 active_nodes_color[i] = clr.interpolate_color(y_edge[0], y_edge[1], y, c1, c2)
 
     return img, active_nodes_color
+
+
+def calculate_normals(vertices, face_indices):
+    normals = np.zeros((vertices.shape[0], 3))
+    for indices in face_indices:
+        triangle_vertices = vertices[indices]
+        face_normal = np.cross(triangle_vertices[1] - triangle_vertices[0], triangle_vertices[2] - triangle_vertices[1])
+        face_normal = face_normal / np.linalg.norm(face_normal)
+        normals[indices] += face_normal
+
+    for i, normal in enumerate(normals):
+        normals[i] = normal / np.linalg.norm(normal)
+    return normals
