@@ -58,11 +58,16 @@ def load_data_mat(filename):
     phi : the rotation angle in radians
     """
     data = io.loadmat(filename)
+    # print(data['point_light_pos'])
+    Ia, focal, lookat = data['Ia'][0], data['focal'][0, 0], data['lookat'].T[0]
+    normals, point_light_intensity, point_light_pos = data['normals'], data['point_light_intensity'][0], data[
+        'point_light_pos'].T[0]
+    M, N, W, H = data['M'][0, 0], data['N'][0, 0], data['W'][0, 0], data['H'][0, 0]
+    vert_colors, face_indices, verts = np.array(data['vert_colors']), np.array(data['face_indices'] - 1), np.array(
+        data['verts']).T
+    eye, bg_color = data['eye'].T[0], data['bg_color'].T[0]
+    ka, kd, ks = data['ka'][0, 0], data['kd'][0, 0], data['ks'][0, 0]
+    n_phong, up = data['n_phong'][0, 0], data['up'].T[0]
 
-    vcolors, faces, verts3d = np.array(data['C']), np.array(data['F'] - 1), np.array(data['V'])
-    u = data['g'].T[0]
-    ck, cu, cv = data['ck'].T[0], data['cu'].T[0], data['cv'].T[0]
-    t1, t2 = data['t1'].T[0], data['t2'].T[0]
-    phi = data['theta'][0]
-
-    return vcolors, faces, verts3d, u, ck, cu, cv, t1, t2, phi
+    return vert_colors, face_indices, verts, M, N, W, H, focal, eye, up, lookat, ka, kd, ks, point_light_intensity, \
+           point_light_pos, normals, bg_color, Ia, n_phong

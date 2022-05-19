@@ -1,11 +1,12 @@
 import numpy as np
-from Phong_material import PhongMaterial
-from point_light import PointLight
+
+
+# todo: should P be the median point of the triangle?
 
 
 def ambient_light(material, color, I_ambient):
     I = I_ambient * material.k_ambient
-    return color + I
+    return color * I
 
 
 def diffuse_light(P, N, color, material, lights):
@@ -15,7 +16,7 @@ def diffuse_light(P, N, color, material, lights):
         L = (light.pos - P) / np.linalg.norm(light.pos - P)
         incidence_angle = np.dot(N, L)
         I += light.intensity * material.k_diffuse * incidence_angle
-    return color + I[0]
+    return color * I[0]
 
 
 def specular_light(P, N, color, camera_pos, material, lights):
@@ -27,8 +28,7 @@ def specular_light(P, N, color, camera_pos, material, lights):
         projection_LN = np.dot(N, L)
         cos_angle = np.dot(2 * N * projection_LN - L, V)
         I += light.intensity * material.k_specular * cos_angle
-    return color + I[0]
-
+    return color * I[0]
 
 # p = np.zeros((3,))
 # n = np.array([0, 0, 1])
