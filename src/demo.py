@@ -1,7 +1,7 @@
 from inc.affine import affine_transform
 from inc.transformation import TransformationMatrix
 import inc.Helpers.reader as rd
-from inc.renderer import render_object, render_object2
+from inc.renderer import render_object
 import inc.Helpers.display as dsp
 import inc.Helpers.tools as tls
 from inc.Phong_material import PhongMaterial
@@ -13,12 +13,13 @@ from inc.point_light import PointLight
 vert_colors, face_indices, verts, M, N, W, H, focal, eye, up, lookat, ka, kd, ks, point_light_intensity, \
 point_light_pos, normals, bg_color, Ia, n_phong = rd.load_data_mat(filename='../data/hw3.mat')
 
+# Initialization
 mat = PhongMaterial(ka, kd, ks, n_phong)
 light = PointLight(point_light_pos, point_light_intensity)
 lights = [light]
-# mat, lights
-img1 = render_object2('flat', focal, eye, lookat, up, bg_color, M, N, H, W, verts, vert_colors, face_indices, mat,
-                      lights, Ia)
+
+img1 = render_object('flat', focal, eye, lookat, up, bg_color, M, N, H, W, verts, vert_colors, face_indices, mat,
+                     lights, Ia)
 
 # load data, project 3D->2D and render the object
 # vcolors, faces, verts3d, u, ck, cu, cv, t1, t2, phi = rd.load_data_npy(filename='../data/hw2.npy')
@@ -28,8 +29,8 @@ img1 = render_object2('flat', focal, eye, lookat, up, bg_color, M, N, H, W, vert
 # img1 = render_object(verts3d, faces, vcolors, M, N, img_H, img_W, f, cv, ck, cu)
 dsp.display_npy(img1, save=False, filename='1')
 # transformation = TransformationMatrix()
-#
-# # Tranformation 1
+
+# Tranformation 1
 # transformation.translate(t=t1)
 # verts3d = affine_transform(cp=verts3d, T=transformation.T)
 # img2 = render_object(verts3d, faces, vcolors, M, N, img_H, img_W, f, cv, ck, cu)
