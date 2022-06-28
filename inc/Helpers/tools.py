@@ -166,6 +166,27 @@ def color_contour(y, node_combination_on_edge, x_limits_of_edge, y_limits_of_edg
 
 
 def calculate_normals(vertices, face_indices):
+    """Calculates the normal vector on every vertex of the triangles
+
+    Notes
+    -----
+    In order to compute the normal vector on a vertex, we first have to compute the normal vector on the center of
+    every triangle. This is easy to compute, as the normal in the triangle's center is given by the external product
+    between two edges of the triangle, divided by its norm, to make it a unit vector. Now we can compute the normal
+    on a vertex v, as the addition of all the normals from the neighboring triangles, which by default are incident with
+    vertex v. To avoid redundant computations, this is calculated incrementally, so after getting the normal of a
+    triangle, we just add it to all three vertices, to obtain the partially computed normal of the vertices. In the end
+    all vertices will be holding the sum of the normals, from their incident triangles.
+
+    Parameters
+    ----------
+    vertices: the 3D vertices of every point
+    face_indices: the vertices of every triangle
+
+    Returns
+    -------
+    The normal vector on every triangle's vertex
+    """
     normals = np.zeros((vertices.shape[0], 3))
     for indices in face_indices:
         triangle_vertices = vertices[indices]

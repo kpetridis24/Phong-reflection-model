@@ -6,6 +6,28 @@ import inc.light as lt
 
 def render_phong(verts2d, center, vcolors, normals, camera_pos, ka, kd, ks, light_positions, light_intensities,
                  Ia, n_phong, img):
+    """Renders the image, using the Phong light model
+
+    Parameters
+    ----------
+    verts2d: Lx2 matrix containing the 2D coordinates of every vertex (L vertices)
+    center: the center of every triangle
+    vcolors: Lx3 matrix containing the RGB color values of every vertex
+    normals: the normal vectors on every triangle's vertex
+    camera_pos: the position of the camera
+    ka: the ambient coefficient
+    kd: the diffuse coefficient
+    ks: the specular coefficient
+    light_positions
+    light_intensities
+    Ia: the ambient intensity of the light source
+    n_phong: the phong number
+    img: MxNx3 partially colored image
+
+    Returns
+    -------
+    MxNx3 updated image
+    """
     if (verts2d == verts2d[0]).all():
         return img
 
