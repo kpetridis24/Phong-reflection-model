@@ -25,16 +25,15 @@ def load_data_npy(filename):
     t2 : displacement transformation
     phi : the rotation angle in radians
     """
-    data = np.load(filename, allow_pickle=True).tolist()
-    data = dict(data)
+    data = dict(np.load(filename, allow_pickle=True).tolist())
+    verts, vertex_colors, face_indices = data['verts'], data['vertex_colors'], data['face_indices']
+    eye, up, lookat = data['cam_eye'], data['cam_up'], data['cam_lookat']
+    ka, kd, ks, n_phong = data['ka'], data['kd'], data['ks'], data['n']
+    light_positions, light_intensities, Ia = data['light_positions'][0], data['light_intensities'][0], data['Ia']
+    M, N, W, H = data['M'], data['N'], data['W'], data['H']
 
-    vcolors, faces, verts3d = np.array(data['vcolors']), np.array(data['faces']), np.array(data['verts3d'])
-    u = data['u']
-    ck, cu, cv = data['c_lookat'], data['c_up'], data['c_org']
-    t1, t2 = data['t_1'], data['t_2']
-    phi = data['phi']
-
-    return vcolors, faces, verts3d, u, ck, cu, cv, t1, t2, phi
+    return verts, vertex_colors, face_indices, eye, up, lookat, ka, kd, ks, n_phong, light_positions, \
+           light_intensities, M, N, W, H, Ia
 
 
 def load_data_mat(filename):
