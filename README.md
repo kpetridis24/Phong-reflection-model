@@ -1,8 +1,9 @@
-# projections-transformations
+# Phong Reflection Model
 
-3D object projection to camera & application of rotations and displacements. The main parts of the project are
+This project renders a 3D object using the [Phong Light Model](https://en.wikipedia.org/wiki/Phong_reflection_model). 
+It also uses functionalities from the previous projects:
 
-- **Projection** of the 3D object into the camera. This part includes coordinate system tranformations and projection methods to correspond 3D coordinates to 2D.
-- **Rasterization** from the curtain of the camera into the image frame. 
-- **Rendering** of the object and **display**.
-- **Transformations** including rotation and displacement of the visualized object. This part consists of **Affine Transformations** on the coordinates of the object.
+- **image-rendering**
+- **projections-transformations**
+
+to apply triangle filling and display the final result on screen.
