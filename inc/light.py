@@ -33,7 +33,7 @@ def diffuse_light(P, N, color, k_diffuse, light_positions, light_intensities):
     -------
     The diffuse component to be added to the pixel of interest
     """
-    L = ((light_positions - P) / np.linalg.norm(light_positions - P))[0]
+    L = ((light_positions - P) / np.linalg.norm(light_positions - P))
     incidence_angle = np.dot(N, L)
     I = light_intensities * k_diffuse * incidence_angle
     return color * I
